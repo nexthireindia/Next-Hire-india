@@ -3,207 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next Hire | Secure Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Next Hire | Careers Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f0f11;
-            --sidebar-bg: #16161a;
-            --accent-blue: #3b82f6;
-            --border-line: #2a2a35;
-            --danger-red: #ef4444;
-            --success-green: #10b981;
+            --hex-blue: #002855;
+            --hex-orange: #f26a36;
+            --bg-light: #f4f6f9;
+            --text-dark: #22252a;
+            --border-color: #d1d5db;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); }
         
-        /* Lock Box View */
-        .lock-container { width: 100%; max-width: 400px; background: var(--sidebar-bg); border: 1px solid var(--border-line); padding: 40px 30px; border-radius: 12px; text-align: center; }
-        .lock-container h2 { margin-bottom: 8px; font-weight: 600; }
-        .lock-container input { padding: 12px; width: 100%; background: #1f1f24; border: 1px solid var(--border-line); border-radius: 6px; color: #fff; margin-bottom: 20px; text-align: center; outline: none; }
-        .lock-container input:focus { border-color: var(--accent-blue); }
-        .lock-container button { width: 100%; padding: 12px; background: var(--accent-blue); border: none; border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .lock-container button:hover { background: #2563eb; }
+        .navbar { background: #ffffff; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--hex-blue); box-shadow: 0 3px 6px rgba(0,0,0,0.05); }
+        .navbar .logo { font-size: 2.2rem; font-weight: 800; color: var(--hex-blue); letter-spacing: -1px; line-height: 1; }
+        .navbar .logo span { color: var(--hex-orange); font-weight: 800; }
+        .navbar .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; margin-left: 25px; }
 
-        /* Dashboard Wrapper */
-        .admin-wrapper { width: 100%; height: 100vh; display: none; grid-template-columns: 260px 1fr; }
-        
-        /* Sidebar Styling */
-        .sidebar { background: var(--sidebar-bg); border-right: 1px solid var(--border-line); padding: 30px 20px; display: flex; flex-direction: column; gap: 10px; }
-        .sidebar .brand { font-size: 1.4rem; font-weight: 700; margin-bottom: 30px; color: #fff; text-align: center; }
-        .sidebar .menu-btn { width: 100%; padding: 12px 15px; background: transparent; border: none; border-radius: 6px; color: #94a3b8; text-align: left; font-weight: 500; cursor: pointer; transition: 0.2s; outline: none; }
-        .sidebar .menu-btn:hover, .sidebar .menu-btn.active { background: var(--accent-blue); color: #fff; }
+        .hero { background: linear-gradient(rgba(0,40,85,0.95), rgba(0,40,85,0.85)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200') no-repeat center/cover; color: #fff; padding: 70px 20px; text-align: center; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .hero h1 span { color: var(--hex-orange); }
+        .hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto; font-weight: 400; }
 
-        /* Main Content View Frame */
-        .content-frame { padding: 40px; overflow-y: auto; background: var(--bg-dark); width: 100%; }
-        .admin-page { display: none; }
-        .admin-page.active { display: block; }
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
+        
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
 
-        .page-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; border-bottom: 2px solid var(--border-line); padding-bottom: 10px; }
-        .sub-title { font-size: 1.2rem; font-weight: 600; margin-top: 40px; margin-bottom: 15px; color: #cbd5e1; }
+        .section-heading { font-size: 1.3rem; font-weight: 700; color: var(--hex-blue); margin-bottom: 20px; border-left: 4px solid var(--hex-orange); padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .job-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease; cursor: pointer; }
+        .job-card:hover { border-color: var(--hex-blue); box-shadow: 0 4px 12px rgba(0,40,85,0.1); transform: translateY(-1px); }
         
-        .form-row { display: flex; gap: 20px; margin-bottom: 15px; }
-        .form-group { flex: 1; display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px; }
-        input, textarea, select { padding: 12px; background: #1f1f24; border: 1px solid var(--border-line); border-radius: 6px; color: #fff; font-size: 0.9rem; outline: none; }
-        input:focus, textarea:focus, select:focus { border-color: var(--accent-blue); }
+        .job-title { font-size: 1.25rem; font-weight: 700; color: var(--hex-blue); margin-bottom: 8px; }
+        .job-details { display: flex; gap: 20px; font-size: 0.85rem; color: #6b7280; margin-bottom: 15px; font-weight: 600; }
+        .job-type-badge { background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
+        .job-desc { font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+
+        .form-panel { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); position: sticky; top: 20px; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--hex-blue); margin-bottom: 6px; text-transform: uppercase; }
         
-        /* Table Controls */
-        .table-responsive { width: 100%; overflow-x: auto; background: var(--sidebar-bg); border-radius: 8px; border: 1px solid var(--border-line); }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 14px 20px; border-bottom: 1px solid var(--border-line); font-size: 0.9rem; }
-        th { background: #1f1f24; color: #fff; font-weight: 600; }
-        td { color: #94a3b8; vertical-align: middle; }
-        tr:last-child td { border-bottom: none; }
+        input[type="text"], input[type="email"], input[type="tel"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; background: #fff; color: var(--text-dark); transition: all 0.2s; }
+        input:focus { outline: none; border-color: var(--hex-blue); box-shadow: 0 0 0 3px rgba(0,40,85,0.1); }
         
-        .dl-btn { background: var(--success-green); padding: 6px 12px; color: white; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: 500; display: inline-block; }
-        .dl-btn:hover { background: #059669; }
-        .del-btn { background: var(--danger-red); padding: 6px 12px; color: white; border: none; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        .del-btn:hover { background: #dc2626; }
+        input[type="file"] { background: #f8fafc; padding: 10px; border: 1px dashed var(--border-color); border-radius: 4px; cursor: pointer; }
+
+        .active-job-box { background: #f8fafc; padding: 12px; border: 1px dashed var(--hex-blue); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: var(--hex-blue); margin-bottom: 20px; }
         
-        .submit-btn { background: var(--accent-blue); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 10px; width: max-content; }
-        .submit-btn:hover { background: #2563eb; }
+        .btn-submit { width: 100%; padding: 14px; background: var(--hex-blue); color: #fff; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
+        .btn-submit:hover { background: #001f42; }
+        .btn-submit:disabled { background: #cccccc; cursor: not-allowed; }
+
+        .loading-box { text-align: center; padding: 40px; color: #6b7280; font-weight: 600; border: 1px dashed var(--border-color); background: #fff; border-radius: 6px; }
     </style>
 </head>
 <body>
 
-    <div class="lock-container" id="lockView">
-        <h2>Next Hire Controls</h2>
-        <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 20px;">Administrative verification requested.</p>
-        <form id="lockForm" onsubmit="handleLogin(event)">
-            <input type="password" id="sysPass" placeholder="Enter Control Key" required>
-            <button type="submit">Access Dashboard</button>
-        </form>
+    <div class="navbar">
+        <div class="logo">Next<span>Hire</span></div>
+        <div class="nav-links"><a href="#">Home</a><a href="#">Careers</a></div>
     </div>
 
-    <div class="admin-wrapper" id="dashboardView">
-        <div class="sidebar">
-            <div class="brand">NextHire Admin</div>
-            <button class="menu-btn active" onclick="switchPage('appsPage', this)">📊 Applications</button>
-            <button class="menu-btn" onclick="switchPage('postJobPage', this)">➕ Post New Job</button>
+    <div class="hero">
+        <h1>Join <span>Next</span>Hire Team</h1>
+        <p>Explore specialized job vacancies and collaborate with global industries.</p>
+    </div>
+
+    <div class="main-container">
+        <!-- LEFT: JOBS -->
+        <div>
+            <div class="section-heading">Current Vacancies</div>
+            <div id="jobContainer">
+                <div class="loading-box">Loading matching openings...</div>
+            </div>
         </div>
 
-        <div class="content-frame">
-            
-            <div id="appsPage" class="admin-page active">
-                <h1 class="page-title">Received Applications</h1>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Candidate Name</th>
-                                <th>Applied Position</th>
-                                <th>Email Address</th>
-                                <th>Resume</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="applicationsTableBody">
-                            <tr>
-                                <td>Rahul Sharma</td>
-                                <td>Frontend Developer</td>
-                                <td>rahul@example.com</td>
-                                <td><a href="#" class="dl-btn">Download PDF</a></td>
-                                <td><button class="del-btn" onclick="deleteRow(this)">Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td>Priya Patel</td>
-                                <td>UI/UX Designer</td>
-                                <td>priya@example.com</td>
-                                <td><a href="#" class="dl-btn">Download PDF</a></td>
-                                <td><button class="del-btn" onclick="deleteRow(this)">Delete</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- RIGHT: APPLY FORM -->
+        <div>
+            <div class="section-heading">Application Desk</div>
+            <div class="form-panel">
+                <div id="selectedJobDisplay" class="active-job-box">Please click on any job vacancy to apply</div>
+                <form id="applyForm">
+                    <div class="form-group">
+                        <label>Candidate Full Name</label>
+                        <input type="text" id="cName" placeholder="e.g. Ajay Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Official Email ID</label>
+                        <input type="email" id="cEmail" placeholder="example@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="tel" id="cPhone" placeholder="10-digit number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Upload Resume / Image</label>
+                        <input type="file" id="cResumeFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                        <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">100% Free Secure Upload via GitHub Cloud.</span>
+                    </div>
 
-            <div id="postJobPage" class="admin-page">
-                <h1 class="page-title">Post a New Job Opening</h1>
-                <form id="jobForm" onsubmit="handleJobSubmit(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="jobTitle">Job Title</label>
-                            <input type="text" id="jobTitle" placeholder="e.g. Full Stack Developer" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="jobCategory">Category</label>
-                            <select id="jobCategory" required>
-                                <option value="" disabled selected>Select Category</option>
-                                <option value="development">Development</option>
-                                <option value="design">Design</option>
-                                <option value="marketing">Marketing</option>
-                                <option value="management">Management</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="jobLocation">Location</label>
-                            <input type="text" id="jobLocation" placeholder="e.g. Remote / Mumbai" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="jobSalary">Salary Range</label>
-                            <input type="text" id="jobSalary" placeholder="e.g. ₹5,00000 - ₹8,00000 LPA">
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="jobDesc">Job Description & Requirements</label>
-                        <textarea id="jobDesc" rows="6" placeholder="Write roles, responsibilities, and requirements here..." required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Publish Job Listing</button>
+                    <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
                 </form>
             </div>
-
         </div>
     </div>
 
-    <script>
-        // Default password set to 'admin123'
-        function handleLogin(event) {
-            event.preventDefault();
-            const passInput = document.getElementById('sysPass').value;
-            
-            if(passInput === 'admin123') {
-                document.getElementById('lockView').style.display = 'none';
-                document.getElementById('dashboardView').style.display = 'grid';
-                document.body.style.alignItems = 'stretch';
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ",
+          authDomain: "next-hire-india.firebaseapp.com",
+          databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "next-hire-india",
+          storageBucket: "next-hire-india.firebasestorage.app",
+          messagingSenderId: "408453370854",
+          appId: "1:408453370854:web:4a3ca3b9b312cc9669bc27",
+          measurementId: "G-7YV7H965QS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // ⚠️ GITHUB CREDENTIALS (YAHAN APNI DETAIL BHARO)
+        const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME"; // Apni GitHub ID dalo
+        const GITHUB_REPO = "nexthire-resumes"; // Jo repo abhi banayi wo dalo
+        const GITHUB_TOKEN = "YOUR_GITHUB_TOKEN"; // Jo token copy kiya wo dalo
+
+        let selectedJobTitle = "";
+
+        // Read Live Jobs
+        const jobContainer = document.getElementById('jobContainer');
+        onValue(ref(db, 'jobs'), (snapshot) => {
+            jobContainer.innerHTML = "";
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                for (let key in data) {
+                    const j = data[key];
+                    const div = document.createElement('div');
+                    div.className = 'job-card';
+                    div.innerHTML = `
+                        <div class="job-title">${j.title}</div>
+                        <div class="job-details">
+                            <span>📍 ${j.location}</span>
+                            <span class="job-type-badge">${j.type}</span>
+                        </div>
+                        <div class="job-desc">${j.description.replace(/\n/g, '<br>')}</div>
+                    `;
+                    div.addEventListener('click', () => {
+                        selectedJobTitle = j.title;
+                        document.getElementById('selectedJobDisplay').innerText = `Selected Role: ${j.title} (${j.location})`;
+                        document.getElementById('cName').focus();
+                    });
+                    jobContainer.appendChild(div);
+                }
             } else {
-                alert('Invalid Control Key! Please try again.');
+                jobContainer.innerHTML = "<div class='loading-box'>No current openings active.</div>";
             }
-        }
+        });
 
-        // Tab Switching Logic
-        function switchPage(pageId, buttonElement) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.admin-page');
-            pages.forEach(page => page.classList.remove('active'));
-            
-            // Remove active class from all buttons
-            const buttons = document.querySelectorAll('.sidebar .menu-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            // Show target page and set button active
-            document.getElementById(pageId).classList.add('active');
-            buttonElement.classList.add('active');
-        }
+        // Convert file to Base64 helper
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
 
-        // Delete Row Functionality
-        function deleteRow(button) {
-            if(confirm('Are you sure you want to delete this application?')) {
-                const row = button.closest('tr');
-                row.remove();
+        // Form Submit handler
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!selectedJobTitle) {
+                alert("⚠️ Please select a vacancy card first!");
+                return;
             }
-        }
 
-        // Dummy Job Submit Handler
-        function handleJobSubmit(event) {
-            event.preventDefault();
-            alert('Job listed successfully! (Backend hook needed to save data)');
-            document.getElementById('jobForm').reset();
-        }
+            const fileBtn = document.getElementById('cResumeFile');
+            const submitBtn = document.getElementById('submitBtn');
+            const file = fileBtn.files[0];
+
+            if(!file) {
+                alert("⚠️ Please select a file.");
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Securing File Cloud Space...";
+
+                // Convert file for GitHub upload
+                const base64Content = await toBase64(file);
+                const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g, "_");
+                
+                // GitHub API URL
+                const url = `https://api.github.com/repositories/YOUR_REPO_ID/contents/uploads/${fileName}`; 
+                // Alternative directly using user/repo path:
+                const uploadUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/uploads/${fileName}`;
+
+                // Upload to GitHub
+                const response = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Upload resume: ${fileName}`,
+                        content: base64Content
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("GitHub upload failed. Check credentials.");
+                }
+
+                // Generate live CDN link of GitHub file
+                const downloadURL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/uploads/${fileName}`;
+
+                // Save application data into Firebase Realtime DB
+                const appData = {
+                    appliedFor: selectedJobTitle,
+                    name: document.getElementById('cName').value,
+                    email: document.getElementById('cEmail').value,
+                    phone: document.getElementById('cPhone').value,
+                    resume: downloadURL, 
+                    submittedAt: new Date().toLocaleString()
+                };
+
+                await set(push(ref(db, 'nexthire_applications')), appData);
+                
+                alert("🎉 Application submitted successfully! File saved on GitHub.");
+                document.getElementById('applyForm').reset();
+                document.getElementById('selectedJobDisplay').innerText = "Please click on any job vacancy to apply";
+                selectedJobTitle = "";
+
+            } catch (error) { 
+                alert("Error: " + error.message); 
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Application";
+            }
+        });
     </script>
 </body>
-  </html>
-  
+</html>
