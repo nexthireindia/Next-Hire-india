@@ -3,142 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next Hire | Admin Dashboard</title>
+    <title>Next Hire | Secure Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f0f11;
-            --card-bg: #16161a;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --accent-color: #3b82f6;
-            --border-color: #2a2a35;
-            --danger-color: #ef4444;
+            --bg-dark: #0f0f11;
+            --sidebar-bg: #16161a;
+            --accent-blue: #3b82f6;
+            --border-line: #2a2a35;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
+        body { background-color: var(--bg-dark); color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
         
-        .container { width: 100%; max-width: 900px; display: none; }
+        /* Lock Box View */
+        .lock-container { width: 100%; max-width: 400px; background: var(--sidebar-bg); border: 1px solid var(--border-line); padding: 40px 30px; border-radius: 12px; text-align: center; }
+        .lock-container input { padding: 12px; width: 100%; background: #1f1f24; border: 1px solid var(--border-line); border-radius: 6px; color: #fff; margin-bottom: 20px; text-align: center; }
+        .lock-container button { width: 100%; padding: 12px; background: var(--accent-blue); border: none; border-radius: 6px; color: #fff; font-weight: 600; cursor: pointer; }
+
+        /* Dashboard Wrapper (Hidden Initially) */
+        .admin-wrapper { width: 100%; height: 100vh; display: none; grid-template-columns: 260px 1fr; }
         
-        /* Lock Screen Styling */
-        .auth-container { width: 100%; max-width: 400px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
-        .auth-container h2 { font-size: 1.6rem; margin-bottom: 10px; font-weight: 600; }
-        .auth-container p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 25px; }
+        /* Sidebar Styling */
+        .sidebar { background: var(--sidebar-bg); border-right: 1px solid var(--border-line); padding: 30px 20px; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar .brand { font-size: 1.4rem; font-weight: 700; margin-bottom: 30px; color: #fff; text-align: center; }
+        .sidebar .menu-btn { width: 100%; padding: 12px 15px; background: transparent; border: none; border-radius: 6px; color: #94a3b8; text-align: left; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .sidebar .menu-btn:hover, .sidebar .menu-btn.active { background: var(--accent-blue); color: #fff; }
 
-        header { text-align: center; margin-bottom: 40px; }
-        header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; color: #fff; }
-        header p { color: var(--accent-color); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
+        /* Main Content View Frame */
+        .content-frame { padding: 40px; overflow-y: auto; background: var(--bg-dark); }
+        .admin-page { display: none; }
+        .admin-page.active { display: block; }
 
-        section { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px; margin-bottom: 30px; }
-        .section-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; color: #fff; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-
-        .form-row { display: flex; gap: 15px; margin-bottom: 15px; }
+        .page-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 25px; border-bottom: 2px solid var(--border-line); padding-bottom: 10px; }
+        
+        .form-row { display: flex; gap: 20px; margin-bottom: 15px; }
         .form-group { flex: 1; display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
-        input, textarea, select { padding: 12px; background: #1f1f24; border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-size: 0.9rem; margin-bottom: 15px; width: 100%; }
-        textarea { resize: vertical; height: 80px; }
-        button { width: 100%; padding: 12px; background: var(--accent-color); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #2563eb; }
-        .btn-danger { background: var(--danger-color); }
-        .btn-danger:hover { background: #dc2626; }
-
-        .table-responsive { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-        th { background: #1f1f24; color: #fff; font-weight: 600; }
-        td { color: var(--text-muted); }
+        .form-group label { font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px; }
+        input, textarea, select { padding: 12px; background: #1f1f24; border: 1px solid var(--border-line); border-radius: 6px; color: #fff; font-size: 0.9rem; }
         
-        .btn-download { background: #10b981; padding: 5px 10px; font-size: 0.8rem; border-radius: 4px; color: white; text-decoration: none; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid var(--border-line); font-size: 0.9rem; }
+        th { background: #1f1f24; color: #fff; }
+        td { color: #94a3b8; }
+        .dl-btn { background: #10b981; padding: 4px 10px; color: white; border-radius: 4px; text-decoration: none; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="auth-container" id="authBox">
-        <h2>Next Hire Control</h2>
-        <p>Enter administrative password to access dashboard.</p>
-        <form id="loginForm">
-            <input type="password" id="adminPassword" placeholder="Enter Admin Password" required style="text-align: center;">
-            <button type="submit">Verify & Open</button>
+    <div class="lock-container" id="lockView">
+        <h2>Next Hire Controls</h2>
+        <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 20px;">Administrative verification requested.</p>
+        <form id="lockForm">
+            <input type="password" id="sysPass" placeholder="Enter Control Key" required>
+            <button type="submit">Access Dashboard</button>
         </form>
     </div>
 
-    <div class="container" id="dashboardBox">
-        <header>
-            <h1>Next Hire Dashboard</h1>
-            <p>Admin Control Panel</p>
-        </header>
+    <div class="admin-wrapper" id="dashboardView">
+        <div class="sidebar">
+            <div class="brand">NextHire Admin</div>
+            <button class="menu-btn active" onclick="switchPage('appsPage', this)">📊 Applications</button>
+            <button class="menu-btn" onclick="switchPage('postJobPage', this)">➕ Post New Job</button>
+            <button class="menu-btn" onclick="switchPage('securityPage', this)">🔒 Password Manager</button>
+        </div>
 
-        <section style="border-color: #3b82f6; background: #111115;">
-            <div class="section-title" style="color: var(--accent-color);">Account Security (Reset Password)</div>
-            <form id="resetPassForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Current (Old) Password</label>
-                        <input type="password" id="oldPassword" placeholder="Enter your current password" required>
-                    </div>
-                    <div class="form-group">
-                        <label>New Password</label>
-                        <input type="password" id="newPassword" placeholder="Enter any new password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn-danger" style="width: auto; padding: 10px 25px;">Update Security Key</button>
-            </form>
-        </section>
-
-        <section>
-            <div class="section-title">Create New Job Opening</div>
-            <form id="jobForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Job Title</label>
-                        <input type="text" id="jobTitle" placeholder="e.g. BPO Executive" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="jobLocation" placeholder="e.g. Indore" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Job Type</label>
-                        <select id="jobType">
-                            <option value="Full-Time">Full-Time</option>
-                            <option value="Part-Time">Part-Time</option>
-                            <option value="Contract">Contract</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label>Job Description & Requirements</label>
-                    <textarea id="jobDesc" placeholder="Enter key responsibilities..." required></textarea>
-                </div>
-                <button type="submit" style="width: 100%;">Post Job Live</button>
-            </form>
-        </section>
-
-        <section>
-            <div class="section-title">Received Applications</div>
-            <div class="table-responsive">
-                <table>
+        <div class="content-frame">
+            
+            <div id="appsPage" class="admin-page active">
+                <div class="page-title">Received Applications</div>
+                <table style="width: 100%;">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Candidate Name</th>
-                            <th>Email</th>
-                            <th>Mobile</th>
+                            <th>Candidate</th>
+                            <th>Role Applied</th>
+                            <th>Contact Info</th>
                             <th>Resume</th>
                         </tr>
                     </thead>
-                    <tbody id="applicantTableBody">
-                        <tr>
-                            <td colspan="5" style="text-align: center; color: var(--text-muted);">Loading applications...</td>
-                        </tr>
+                    <tbody id="appTableBody">
+                        <tr><td colspan="4" style="text-align: center;">Syncing cloud node...</td></tr>
                     </tbody>
                 </table>
             </div>
-        </section>
+
+            <div id="postJobPage" class="admin-page">
+                <div class="page-title">Publish New Opening</div>
+                <form id="newJobForm">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Role Profile Title</label>
+                        <input type="text" id="tJob" placeholder="e.g. Graduate Engineer Trainee" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Posting Location</label>
+                            <input type="text" id="lJob" placeholder="e.g. Indore" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Classification</label>
+                            <select id="typeJob">
+                                <option value="Full-Time">Full-Time</option>
+                                <option value="Part-Time">Part-Time</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Job Specifications</label>
+                        <textarea id="dJob" style="height: 100px; resize: none;" placeholder="Provide scope of responsibilities..." required></textarea>
+                    </div>
+                    <button type="submit" style="background: var(--accent-blue); color: white; padding: 12px 30px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Launch Live</button>
+                </form>
+            </div>
+
+            <div id="securityPage" class="admin-page">
+                <div class="page-title">Update Security Credentials</div>
+                <form id="passUpdateForm" style="max-width: 450px;">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Provide Current Password</label>
+                        <input type="password" id="oldP" placeholder="Current authentication key" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Define New Password</label>
+                        <input type="password" id="newP" placeholder="Define any code sequence" required>
+                    </div>
+                    <button type="submit" style="background: #ef4444; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Confirm Update</button>
+                </form>
+            </div>
+
+        </div>
     </div>
+
+    <script>
+        // Global tab shifting function
+        window.switchPage = function(pageId, element) {
+            document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -157,109 +160,89 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        let activeAdminKey = "admin123";
 
-        let currentDBPassword = "admin123"; 
-
-        // --- PASSWORD SYNC ENGINE ---
-        async function fetchCurrentPassword() {
+        async function pullKey() {
             try {
-                const snapshot = await get(ref(db, 'admin_credentials/password'));
-                if (snapshot.exists()) {
-                    currentDBPassword = snapshot.val();
-                    localStorage.setItem('local_admin_pass', currentDBPassword);
-                } else {
-                    const localBackup = localStorage.getItem('local_admin_pass');
-                    currentDBPassword = localBackup ? localBackup : "admin123";
-                }
-            } catch (err) {
-                const localBackup = localStorage.getItem('local_admin_pass');
-                currentDBPassword = localBackup ? localBackup : "admin123";
-            }
+                const s = await get(ref(db, 'admin_credentials/password'));
+                if(s.exists()) { activeAdminKey = s.val(); }
+                else { localStorage.getItem('bk_key') ? activeAdminKey = localStorage.getItem('bk_key') : activeAdminKey="admin123"; }
+            } catch(e) { if(localStorage.getItem('bk_key')) activeAdminKey = localStorage.getItem('bk_key'); }
         }
-        fetchCurrentPassword();
+        pullKey();
 
-        // --- LOGIN BLOCK ---
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        // Lock login handler
+        document.getElementById('lockForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const typedPassword = document.getElementById('adminPassword').value;
-
-            await fetchCurrentPassword();
-
-            if (typedPassword === currentDBPassword) {
-                document.getElementById('authBox').style.display = 'none';
-                document.getElementById('dashboardBox').style.display = 'block';
-                document.body.style.justifyContent = 'flex-start';
-                loadDashboardData(); 
+            await pullKey();
+            if(document.getElementById('sysPass').value === activeAdminKey) {
+                document.getElementById('lockView').style.display = 'none';
+                document.getElementById('dashboardView').style.display = 'grid';
+                document.body.style.alignItems = 'stretch';
+                initDataActions();
             } else {
-                alert("❌ Access Denied! Wrong Admin Password.");
-                document.getElementById('adminPassword').value = "";
+                alert("❌ Verification Rejected!");
+                document.getElementById('sysPass').value = "";
             }
         });
 
-        // --- RESET PASSWORD BLOCK (VALIDATION REMOVED) ---
-        document.getElementById('resetPassForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const oldPass = document.getElementById('oldPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-
-            if (oldPass !== currentDBPassword) {
-                alert("❌ Verification Failed: Current (Old) Password is incorrect!");
-                return;
-            }
-
-            // Kisi bhi rule ki zaroorat nahi, bas field khali nahi honi chahiye
-            if (newPass.trim() === "") {
-                alert("Please enter a valid password.");
-                return;
-            }
-
-            try {
-                await set(ref(db, 'admin_credentials/password'), newPass);
-                localStorage.setItem('local_admin_pass', newPass);
-                alert("🎉 Password updated successfully! Log in again with your new password.");
-                location.reload(); 
-            } catch (error) {
-                localStorage.setItem('local_admin_pass', newPass);
-                alert("🎉 Password updated locally!");
-                location.reload();
-            }
-        });
-
-        // --- MAIN DATA LOADING ---
-        function loadDashboardData() {
-            document.getElementById('jobForm').addEventListener('submit', async (e) => {
+        function initDataActions() {
+            // Add Job Post
+            document.getElementById('newJobForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const newJob = {
-                    title: document.getElementById('jobTitle').value,
-                    location: document.getElementById('jobLocation').value,
-                    type: document.getElementById('jobType').value,
-                    description: document.getElementById('jobDesc').value,
-                    postedAt: new Date().toLocaleDateString()
+                const jobPayload = {
+                    title: document.getElementById('tJob').value,
+                    location: document.getElementById('lJob').value,
+                    type: document.getElementById('typeJob').value,
+                    description: document.getElementById('dJob').value
                 };
                 try {
-                    await set(push(ref(db, 'jobs')), newJob);
-                    alert("🎉 Job posted successfully!");
-                    document.getElementById('jobForm').reset();
-                } catch (error) { alert("Error: " + error.message); }
+                    await set(push(ref(db, 'jobs')), jobPayload);
+                    alert("🎉 Job Active On Global Desk!");
+                    document.getElementById('newJobForm').reset();
+                } catch(err) { alert(err.message); }
             });
 
-            const tableBody = document.getElementById('applicantTableBody');
-            onValue(ref(db, 'nexthire_applications'), (snapshot) => {
-                tableBody.innerHTML = "";
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    for (let key in data) {
-                        const applicant = data[key];
-                        let resumeAction = "No Resume";
-                        if (applicant.resume && applicant.resume !== "No resume uploaded") {
-                            resumeAction = `<a href="${applicant.resume}" download="${applicant.name}_Resume" class="btn-download">View/Download</a>`;
-                        }
-                        tableBody.innerHTML += `<tr><td>${applicant.submittedAt ? applicant.submittedAt.split(',')[0] : 'N/A'}</td><td style="color:#fff; font-weight:500;">${applicant.name}</td><td>${applicant.email}</td><td>${applicant.phone}</td><td>${resumeAction}</td></tr>`;
+            // Password Manager (No validation engine)
+            document.getElementById('passUpdateForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const oldInput = document.getElementById('oldP').value;
+                const newInput = document.getElementById('newP').value;
+
+                if(oldInput !== activeAdminKey) {
+                    alert("❌ Current active authorization key is wrong!");
+                    return;
+                }
+                try {
+                    await set(ref(db, 'admin_credentials/password'), newInput);
+                    localStorage.setItem('bk_key', newInput);
+                    alert("🎉 Security Context Shifted! Rebooting dashboard layout.");
+                    location.reload();
+                } catch(err) {
+                    localStorage.setItem('bk_key', newInput);
+                    location.reload();
+                }
+            });
+
+            // Applications stream sync
+            const bodyRef = document.getElementById('appTableBody');
+            onValue(ref(db, 'nexthire_applications'), (snap) => {
+                bodyRef.innerHTML = "";
+                if(snap.exists()) {
+                    const dict = snap.val();
+                    for(let node in dict) {
+                        const item = dict[node];
+                        bodyRef.innerHTML += `<tr>
+                            <td><b>${item.name}</b><br><small style='color:#64748b;'>${item.submittedAt}</small></td>
+                            <td><span style='color:#fff; font-weight:500;'>${item.appliedFor}</span></td>
+                            <td>📧 ${item.email}<br>📞 ${item.phone}</td>
+                            <td><a href='${item.resume}' target='_blank' class='dl-btn'>Launch Document</a></td>
+                        </tr>`;
                     }
-                } else { tableBody.innerHTML = "<tr><td colspan='5' style='text-align: center;'>No applications received yet.</td></tr>"; }
+                } else { bodyRef.innerHTML = "<tr><td colspan='4' style='text-align:center;'>No entries listed in cloud database node.</td></tr>"; }
             });
         }
     </script>
 </body>
-                  </html>
-                  
+        </html>
+        
