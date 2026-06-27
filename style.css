@@ -1,6 +1,6 @@
 body{
     margin:0;
-    font-family:'Poppins', sans-serif;;
+    font-family:'Poppins', sans-serif;
     background:#f5f7fb;
 }
 
@@ -11,6 +11,7 @@ header{
     padding:40px 20px;
     box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
+
 header h1{
     margin:0;
     font-size:42px;
@@ -23,6 +24,7 @@ header p{
     font-size:18px;
     opacity:0.9;
 }
+
 .hero{
     text-align:center;
     padding:60px 20px;
@@ -41,18 +43,4 @@ header p{
 
 .hero button{
     background:#0A4D9B;
-    color:white;
-    border:none;
-    padding:15px 35px;
-    font-size:17px;
-    font-weight:bold;
-    border-radius:50px;
-    cursor:pointer;
-    box-shadow:0 8px 20px rgba(10,77,155,.25);
-    transition:all .3s ease;
-}
-
-.hero button:hover{
-    background:#083b76;
-    transform:translateY(-2px);
-}
+    color:#ffffff
