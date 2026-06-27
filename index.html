@@ -24,7 +24,10 @@
 
 <section class="container">
     <h2>Latest Jobs</h2>
+
+    <!-- Jobs will load here -->
     <div id="jobList"></div>
+
 </section>
 
 <section class="container">
@@ -38,7 +41,11 @@
 
         <div class="phone-box">
             <span>+91</span>
-            <input type="tel" maxlength="10" pattern="[0-9]{10}" placeholder="10 digit mobile number" required>
+            <input type="tel"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                placeholder="10 digit mobile number"
+                required>
         </div>
 
         <input type="file" required>
@@ -46,31 +53,34 @@
         <button type="submit">Submit Application</button>
 
     </form>
+
 </section>
 
 <script>
 function loadJobs(){
-    let jobs = JSON.parse(localStorage.getItem("jobs") || "[]");
 
-    let jobList = document.getElementById("jobList");
+let jobs = JSON.parse(localStorage.getItem("jobs") || "[]");
 
-    jobList.innerHTML = "";
+let jobList = document.getElementById("jobList");
 
-    if(jobs.length === 0){
-        jobList.innerHTML = "<p>No jobs available</p>";
-        return;
-    }
+jobList.innerHTML = "";
 
-    jobs.forEach(job => {
-        jobList.innerHTML += `
-        <div class="card">
-            <h3>${job.title}</h3>
-            <p>Location: ${job.location}</p>
-            <p>${job.desc}</p>
-            <a href="job.html"><button>Apply</button></a>
-        </div>
-        `;
-    });
+if(jobs.length === 0){
+jobList.innerHTML = "<p>No jobs available right now</p>";
+return;
+}
+
+jobs.forEach(job => {
+jobList.innerHTML += `
+<div class="card">
+    <h3>${job.title}</h3>
+    <p><b>Location:</b> ${job.location}</p>
+    <p>${job.desc}</p>
+    <a href="job.html"><button>Apply</button></a>
+</div>
+`;
+});
+
 }
 
 loadJobs();
