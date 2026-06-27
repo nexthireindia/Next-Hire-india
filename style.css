@@ -1,142 +1,55 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f4f6f8;
 }
 
-body{
-    font-family:'Poppins', sans-serif;
-    background:linear-gradient(to bottom, #f5f7fb, #e9eef7);
-    color:#222;
+/* Top Bar */
+.topbar {
+  background: #111;
+  color: white;
+  padding: 15px;
+  text-align: center;
 }
 
-/* HEADER */
-header{
-    background:linear-gradient(135deg,#0A4D9B,#0F6BD9);
-    color:white;
-    text-align:center;
-    padding:40px 20px;
+/* Container */
+.container {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
 }
 
-header h1{
-    font-size:42px;
-    font-weight:700;
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
 }
 
-header p{
-    margin-top:10px;
-    font-size:18px;
-    opacity:0.9;
+input, textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
-/* HERO */
-.hero{
-    text-align:center;
-    padding:60px 20px;
+button {
+  padding: 10px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-.hero h2{
-    font-size:32px;
-    color:#0A4D9B;
+/* Job Cards */
+#jobList {
+  margin-top: 20px;
 }
 
-.hero p{
-    color:#555;
-    margin:10px 0 20px;
-}
-
-.hero button{
-    background:#0A4D9B;
-    color:white;
-    border:none;
-    padding:12px 22px;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.hero button:hover{
-    background:#083b77;
-}
-
-/* CONTAINER */
-.container{
-    width:90%;
-    max-width:1100px;
-    margin:auto;
-    padding:20px 0;
-}
-
-/* CARD */
-.card{
-    background:white;
-    padding:20px;
-    margin:15px 0;
-    border-radius:12px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.card button{
-    background:#0A4D9B;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-/* FORM */
-.apply-form{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    max-width:500px;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.apply-form input{
-    padding:12px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:15px;
-}
-
-/* PHONE */
-.phone-box{
-    display:flex;
-    border:1px solid #ddd;
-    border-radius:8px;
-    overflow:hidden;
-}
-
-.phone-box span{
-    background:#f0f0f0;
-    padding:12px;
-    font-weight:600;
-}
-
-.phone-box input{
-    border:none;
-    padding:12px;
-    flex:1;
-    outline:none;
-}
-
-/* FORM BUTTON */
-.apply-form button{
-    background:#0A4D9B;
-    color:white;
-    border:none;
-    padding:12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.apply-form button:hover{
-    background:#083b77;
+.job-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-left: 5px solid black;
 }
