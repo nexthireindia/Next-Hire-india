@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next Hire India</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<title>Next Hire India</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -18,30 +19,12 @@
 
 <section class="hero">
     <h2>Find Your Dream Job</h2>
-    <p>Apply for verified jobs, build your career</p>
-    <button>Apply Now</button>
+    <p>Apply for verified jobs easily</p>
 </section>
 
 <section class="container">
     <h2>Latest Jobs</h2>
-
-    <div class="card">
-        <h3>BPO Executive</h3>
-        <p>Location: Bhopal</p>
-        <button>Apply</button>
-    </div>
-
-    <div class="card">
-        <h3>Data Entry Operator</h3>
-        <p>Location: Work From Home</p>
-        <button>Apply</button>
-    </div>
-
-    <div class="card">
-        <h3>Picker / Packer</h3>
-        <p>Location: Warehouse Jobs</p>
-        <button>Apply</button>
-    </div>
+    <div id="jobList"></div>
 </section>
 
 <section class="container">
@@ -55,11 +38,7 @@
 
         <div class="phone-box">
             <span>+91</span>
-            <input type="tel"
-                placeholder="10 digit mobile number"
-                maxlength="10"
-                pattern="[0-9]{10}"
-                required>
+            <input type="tel" maxlength="10" pattern="[0-9]{10}" placeholder="10 digit mobile number" required>
         </div>
 
         <input type="file" required>
@@ -68,6 +47,34 @@
 
     </form>
 </section>
+
+<script>
+function loadJobs(){
+    let jobs = JSON.parse(localStorage.getItem("jobs") || "[]");
+
+    let jobList = document.getElementById("jobList");
+
+    jobList.innerHTML = "";
+
+    if(jobs.length === 0){
+        jobList.innerHTML = "<p>No jobs available</p>";
+        return;
+    }
+
+    jobs.forEach(job => {
+        jobList.innerHTML += `
+        <div class="card">
+            <h3>${job.title}</h3>
+            <p>Location: ${job.location}</p>
+            <p>${job.desc}</p>
+            <a href="job.html"><button>Apply</button></a>
+        </div>
+        `;
+    });
+}
+
+loadJobs();
+</script>
 
 </body>
 </html>
