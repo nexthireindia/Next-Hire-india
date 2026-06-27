@@ -5,12 +5,12 @@ body{
 }
 
 header{
-    background:#0A4D9B;
+    background:linear-gradient(135deg,#0A4D9B,#0F6BD9);
     color:white;
     text-align:center;
-    padding:25px;
+    padding:40px 20px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
-
 h1{
     margin:0;
     font-size:34px;
