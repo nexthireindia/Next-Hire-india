@@ -47,8 +47,6 @@
         
         input[type="text"], input[type="email"], input[type="tel"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; background: #fff; color: var(--text-dark); transition: all 0.2s; }
         input:focus { outline: none; border-color: var(--hex-blue); box-shadow: 0 0 0 3px rgba(0,40,85,0.1); }
-        
-        input[type="file"] { background: #f8fafc; padding: 10px; border: 1px dashed var(--border-color); border-radius: 4px; cursor: pointer; }
 
         .active-job-box { background: #f8fafc; padding: 12px; border: 1px dashed var(--hex-blue); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: var(--hex-blue); margin-bottom: 20px; }
         
@@ -96,12 +94,6 @@
                         <label>Contact Number</label>
                         <input type="tel" id="cPhone" placeholder="10-digit number" required>
                     </div>
-                    
-                    <div class="form-group">
-                        <label>Upload Resume / Image</label>
-                        <input type="file" id="cResumeFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
-                        <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">100% Free Secure Upload via GitHub Cloud.</span>
-                    </div>
 
                     <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
                 </form>
@@ -126,11 +118,6 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-
-        // ⚠️ GITHUB CREDENTIALS (DETAILS AUTOMATICALLY ADDED)
-        const GITHUB_USERNAME = "Next-Hire-india"; 
-        const GITHUB_REPO = "Next-hire-india-_resume"; 
-        const GITHUB_TOKEN = " "; // LINE 111: Put your token here
 
         let selectedJobTitle = "";
 
@@ -164,14 +151,6 @@
             }
         });
 
-        // Convert file to Base64 helper
-        const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = error => reject(error);
-        });
-
         // Form Submit handler
         document.getElementById('applyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -180,54 +159,24 @@
                 return;
             }
 
-            const fileBtn = document.getElementById('cResumeFile');
             const submitBtn = document.getElementById('submitBtn');
-            const file = fileBtn.files[0];
-
-            if(!file) {
-                alert("⚠️ Please select a file.");
-                return;
-            }
 
             try {
                 submitBtn.disabled = true;
-                submitBtn.innerText = "Securing File Cloud Space...";
+                submitBtn.innerText = "Submitting...";
 
-                const base64Content = await toBase64(file);
-                const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-                
-                const uploadUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/uploads/${fileName}`;
-
-                const response = await fetch(uploadUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `Upload resume: ${fileName}`,
-                        content: base64Content
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error("GitHub upload failed. Check credentials.");
-                }
-
-                const downloadURL = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${GITHUB_REPO}/main/uploads/${fileName}`;
-
+                // Construct and Push Data into Firebase Database directly
                 const appData = {
                     appliedFor: selectedJobTitle,
                     name: document.getElementById('cName').value,
                     email: document.getElementById('cEmail').value,
                     phone: document.getElementById('cPhone').value,
-                    resume: downloadURL, 
                     submittedAt: new Date().toLocaleString()
                 };
 
                 await set(push(ref(db, 'nexthire_applications')), appData);
                 
-                alert("🎉 Application submitted successfully! File saved on GitHub.");
+                alert("🎉 Application submitted successfully!");
                 document.getElementById('applyForm').reset();
                 document.getElementById('selectedJobDisplay').innerText = "Please click on any job vacancy to apply";
                 selectedJobTitle = "";
