@@ -1,5 +1,10 @@
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
     font-family:'Poppins', sans-serif;
     background:linear-gradient(to bottom, #f5f7fb, #e9eef7);
     color:#222;
@@ -15,8 +20,8 @@ header{
 }
 
 header h1{
-    margin:0;
     font-size:42px;
+    font-weight:700;
 }
 
 header p{
@@ -38,6 +43,7 @@ header p{
 
 .hero p{
     color:#555;
+    margin-top:10px;
     margin-bottom:20px;
 }
 
@@ -45,7 +51,7 @@ header p{
     background:#0A4D9B;
     color:#fff;
     border:none;
-    padding:12px 20px;
+    padding:12px 22px;
     border-radius:8px;
     cursor:pointer;
     font-size:16px;
@@ -64,7 +70,7 @@ header p{
     padding:20px 0;
 }
 
-/* JOB CARD */
+/* CARD */
 .card{
     background:white;
     padding:20px;
@@ -122,6 +128,7 @@ header p{
     padding:12px;
     flex:1;
     outline:none;
+    font-size:15px;
 }
 
 /* BUTTON */
@@ -137,4 +144,4 @@ header p{
 
 .apply-form button:hover{
     background:#083b77;
-}
+    }
