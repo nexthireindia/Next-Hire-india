@@ -11,14 +11,17 @@ header{
     padding:40px 20px;
     box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
-h1{
+header h1{
     margin:0;
-    font-size:34px;
+    font-size:42px;
+    font-weight:700;
+    letter-spacing:1px;
 }
 
-p{
-    margin-top:8px;
+header p{
+    margin-top:10px;
     font-size:18px;
+    opacity:0.9;
 }
 .hero{
     text-align:center;
