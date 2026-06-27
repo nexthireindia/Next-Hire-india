@@ -1,90 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Hire India</title>
 
-<title>Next Hire India</title>
+    <link rel="stylesheet" href="style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
 <header>
-    <h1>Next Hire India</h1>
-    <p>Connecting Talent with Opportunity</p>
+
+    <div class="logo">
+        <h1>Next Hire India</h1>
+        <p>Connecting Talent with Opportunity</p>
+    </div>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="#jobs">Jobs</a>
+
+        <a href="#apply">Apply</a>
+
+        <a href="admin.html">Admin</a>
+
+    </nav>
+
 </header>
 
 <section class="hero">
-    <h2>Find Your Dream Job</h2>
-    <p>Apply for verified jobs easily</p>
+
+    <div class="hero-content">
+
+        <h2>Find Your Dream Job Today</h2>
+
+        <p>
+            Explore verified opportunities in BPO, IT, Data Entry,
+            Customer Support, Picker & Packer, Sales and many more.
+        </p>
+
+        <a href="#jobs">
+            <button>Browse Jobs</button>
+        </a>
+
+    </div>
+
 </section>
 
-<section class="container">
-    <h2>Latest Jobs</h2>
+<section id="jobs" class="jobs">
 
-    <!-- Jobs will load here -->
-    <div id="jobList"></div>
+    <div class="section-title">
+
+        <h2>Latest Jobs</h2>
+
+        <p>Explore the latest verified job openings across India.</p>
+
+    </div>
+
+    <div id="jobList">
+
+        <!-- Firebase se jobs yaha automatically show hongi -->
+
+    </div>
 
 </section>
 
-<section class="container">
-    <h2>Apply Now</h2>
+<section id="apply" class="apply">
 
-    <form class="apply-form">
+    <div class="section-title">
 
-        <input type="text" placeholder="Full Name" required>
+        <h2>Apply Now</h2>
 
-        <input type="email" placeholder="Email Address" required>
+        <p>Fill in your details and upload your resume.</p>
+
+    </div>
+
+    <form id="applyForm">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Full Name"
+            required
+        >
+
+        <input
+            type="email"
+            id="email"
+            
+            placeholder="Email Address"
+            required
+        >
 
         <div class="phone-box">
+
             <span>+91</span>
-            <input type="tel"
+
+            <input
+                type="tel"
+                id="phone"
                 maxlength="10"
                 pattern="[0-9]{10}"
-                placeholder="10 digit mobile number"
-                required>
+                placeholder="10 Digit Mobile Number"
+                required
+            >
+
         </div>
 
-        <input type="file" required>
+        <input
+            type="file"
+            id="resume"
+            required
+        >
 
-        <button type="submit">Submit Application</button>
+        <button type="submit">
+            Submit Application
+        </button>
 
     </form>
 
-</section>
+            </section>
 
-<script>
-function loadJobs(){
+    <footer class="footer">
 
-let jobs = JSON.parse(localStorage.getItem("jobs") || "[]");
+    <p>© 2026 Next Hire India. All Rights Reserved.</p>
 
-let jobList = document.getElementById("jobList");
+</footer>
 
-jobList.innerHTML = "";
 
-if(jobs.length === 0){
-jobList.innerHTML = "<p>No jobs available right now</p>";
-return;
-}
-
-jobs.forEach(job => {
-jobList.innerHTML += `
-<div class="card">
-    <h3>${job.title}</h3>
-    <p><b>Location:</b> ${job.location}</p>
-    <p>${job.desc}</p>
-    <a href="job.html"><button>Apply</button></a>
-</div>
-`;
-});
-
-}
-
-loadJobs();
-</script>
+<!-- Firebase + Script File -->
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
