@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Hire | Careers Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --hex-blue: #002855;
+            --hex-orange: #f26a36;
+            --bg-light: #f4f6f9;
+            --text-dark: #22252a;
+            --border-color: #d1d5db;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); }
+        
+        .navbar { background: #ffffff; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--hex-blue); box-shadow: 0 3px 6px rgba(0,0,0,0.05); }
+        .navbar .logo { font-size: 2.2rem; font-weight: 800; color: var(--hex-blue); letter-spacing: -1px; line-height: 1; }
+        .navbar .logo span { color: var(--hex-orange); font-weight: 800; }
+        .navbar .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; margin-left: 25px; }
+
+        .hero { background: linear-gradient(rgba(0,40,85,0.95), rgba(0,40,85,0.85)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200') no-repeat center/cover; color: #fff; padding: 70px 20px; text-align: center; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .hero h1 span { color: var(--hex-orange); }
+        .hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto; font-weight: 400; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
+        
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
+
+        .section-heading { font-size: 1.3rem; font-weight: 700; color: var(--hex-blue); margin-bottom: 20px; border-left: 4px solid var(--hex-orange); padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .job-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease; cursor: pointer; }
+        .job-card:hover { border-color: var(--hex-blue); box-shadow: 0 4px 12px rgba(0,40,85,0.1); transform: translateY(-1px); }
+        
+        .job-title { font-size: 1.25rem; font-weight: 700; color: var(--hex-blue); margin-bottom: 8px; }
+        .job-details { display: flex; gap: 20px; font-size: 0.85rem; color: #6b7280; margin-bottom: 15px; font-weight: 600; }
+        .job-type-badge { background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; }
+        .job-desc { font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+
+        .form-panel { background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); position: sticky; top: 20px; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--hex-blue); margin-bottom: 6px; text-transform: uppercase; }
+        
+        input[type="text"], input[type="email"], input[type="tel"] { padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.9rem; background: #fff; color: var(--text-dark); transition: all 0.2s; }
+        input:focus { outline: none; border-color: var(--hex-blue); box-shadow: 0 0 0 3px rgba(0,40,85,0.1); }
+
+        .active-job-box { background: #f8fafc; padding: 12px; border: 1px dashed var(--hex-blue); border-radius: 4px; font-size: 0.85rem; font-weight: 600; color: var(--hex-blue); margin-bottom: 20px; }
+        
+        .btn-submit { width: 100%; padding: 14px; background: var(--hex-blue); color: #fff; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
+        .btn-submit:hover { background: #001f42; }
+        .btn-submit:disabled { background: #cccccc; cursor: not-allowed; }
+
+        .loading-box { text-align: center; padding: 40px; color: #6b7280; font-weight: 600; border: 1px dashed var(--border-color); background: #fff; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">Next<span>Hire</span></div>
+        <div class="nav-links"><a href="#">Home</a><a href="#">Careers</a></div>
+    </div>
+
+    <div class="hero">
+        <h1>Connecting <span>People</span> With Opportunity</h1>
+        <p>Explore specialized job vacancies and collaborate with global industries.</p>
+    </div>
+
+    <div class="main-container">
+        <div>
+            <div class="section-heading">Current Vacancies</div>
+            <div id="jobContainer">
+                <div class="loading-box">Loading matching openings...</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-heading">Application Desk</div>
+            <div class="form-panel">
+                <div id="selectedJobDisplay" class="active-job-box">Please click on any job vacancy to apply</div>
+                <form id="applyForm">
+                    <div class="form-group">
+                        <label>Candidate Full Name</label>
+                        <input type="text" id="cName" placeholder="e.g. Ajay Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Official Email ID</label>
+                        <input type="email" id="cEmail" placeholder="example@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="tel" id="cPhone" placeholder="10-digit number" required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ",
+          authDomain: "next-hire-india.firebaseapp.com",
+          databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "next-hire-india",
+          storageBucket: "next-hire-india.firebasestorage.app",
+          messagingSenderId: "408453370854",
+          appId: "1:408453370854:web:4a3ca3b9b312cc9669bc27",
+          measurementId: "G-7YV7H965QS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let selectedJobTitle = "";
+
+        // Read Live Jobs
+        const jobContainer = document.getElementById('jobContainer');
+        onValue(ref(db, 'jobs'), (snapshot) => {
+            jobContainer.innerHTML = "";
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                for (let key in data) {
+                    const j = data[key];
+                    const div = document.createElement('div');
+                    div.className = 'job-card';
+                    div.innerHTML = `
+                        <div class="job-title">${j.title}</div>
+                        <div class="job-details">
+                            <span>📍 ${j.location}</span>
+                            <span class="job-type-badge">${j.type}</span>
+                        </div>
+                        <div class="job-desc">${j.description.replace(/\n/g, '<br>')}</div>
+                    `;
+                    div.addEventListener('click', () => {
+                        selectedJobTitle = j.title;
+                        document.getElementById('selectedJobDisplay').innerText = `Selected Role: ${j.title} (${j.location})`;
+                        document.getElementById('cName').focus();
+                    });
+                    jobContainer.appendChild(div);
+                }
+            } else {
+                jobContainer.innerHTML = "<div class='loading-box'>No current openings active.</div>";
+            }
+        });
+
+        // Form Submit handler
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!selectedJobTitle) {
+                alert("⚠️ Please select a vacancy card first!");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Submitting...";
+
+                // Construct and Push Data into Firebase Database directly
+                const appData = {
+                    appliedFor: selectedJobTitle,
+                    name: document.getElementById('cName').value,
+                    email: document.getElementById('cEmail').value,
+                    phone: document.getElementById('cPhone').value,
+                    submittedAt: new Date().toLocaleString()
+                };
+
+                await set(push(ref(db, 'nexthire_applications')), appData);
+                
+                alert("🎉 Application submitted successfully!");
+                document.getElementById('applyForm').reset();
+                document.getElementById('selectedJobDisplay').innerText = "Please click on any job vacancy to apply";
+                selectedJobTitle = "";
+
+            } catch (error) { 
+                alert("Error: " + error.message); 
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Application";
+            }
+        });
+    </script>
+</body>
+</html>
