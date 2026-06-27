@@ -87,3 +87,6 @@
 
 </body>
 </html>
+.card {
+    text-align: left;
+}
