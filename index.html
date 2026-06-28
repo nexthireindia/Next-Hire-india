@@ -2,79 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Next Hire India | Careers</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --navy: #002855; --orange: #ff7e00; --bg: #f4f7f9; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); margin: 0; color: #333; }
-        
-        /* Header */
-        header { background: var(--navy); padding: 25px 50px; color: white; }
-        .logo { font-weight: 700; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; }
-        
-        /* Main Container */
-        .wrapper { max-width: 800px; margin: 40px auto; padding: 20px; }
-        
-        /* Card */
-        .card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 30px; }
-        h2 { color: var(--navy); margin-top: 0; }
-        
-        /* Form Styling */
-        input { width: 100%; padding: 14px; margin: 12px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-family: inherit; }
-        button { width: 100%; padding: 15px; background: var(--orange); color: white; border: none; border-radius: 4px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #e67100; }
-    </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">Next Hire India</div>
+    <div class="logo"><span>Next</span> <span>Hire</span> India</div>
 </header>
 
-<div class="wrapper">
-    <div class="card">
-        <h2>BPO Executive</h2>
-        <p><b>Location:</b> Bhopal | <b>Salary:</b> 12,000 - 18,000</p>
-    </div>
+<section class="hero">
+    <h1>Connecting People With Opportunities</h1>
+    <button class="btn-primary" onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})">View Openings</button>
+</section>
 
-    <div class="card">
-        <h3 style="margin-top:0;">Apply Now</h3>
-        <form id="applyForm">
-            <input type="text" id="cName" placeholder="Full Name" required>
-            <input type="email" id="cEmail" placeholder="Email Address" required>
-            <input type="tel" id="cPhone" value="+91 " maxlength="14" required 
-                   oninput="this.value = '+91 ' + this.value.replace(/[^0-9]/g, '').slice(0, 10)">
-            <button type="submit" id="btnSubmit">Submit Application</button>
-        </form>
+<div class="job-container" id="jobs">
+    <!-- Dynamic Job Cards will appear here -->
+    <div class="job-card">
+        <h3>BPO Executive</h3>
+        <p>Salary: 15k-20k | Professional communication required.</p>
+        <button class="btn-primary" onclick="document.getElementById('modal').style.display='flex'">View More</button>
     </div>
 </div>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script>
-    const firebaseConfig = { databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app" };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h2>Job Title</h2>
+        <p>Full Description details will be displayed here.</p>
+        <form id="applyForm">
+            <input type="text" placeholder="Full Name" required style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
+            <button type="submit" class="btn-primary" style="width:100%;">Apply Now</button>
+        </form>
+        <button onclick="document.getElementById('modal').style.display='none'" style="margin-top:10px; width:100%; padding:10px; cursor:pointer;">Close</button>
+    </div>
+</div>
 
-    document.getElementById('applyForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        btn.innerText = "Submitting...";
-        
-        db.ref('nexthire_applications').push({
-            name: document.getElementById('cName').value,
-            email: document.getElementById('cEmail').value,
-            phone: document.getElementById('cPhone').value,
-            appliedAt: new Date().toLocaleString()
-        }).then(() => {
-            alert("Application Submitted Successfully!");
-            document.getElementById('applyForm').reset();
-            document.getElementById('cPhone').value = "+91 ";
-            btn.innerText = "Submit Application";
-        });
-    });
-</script>
+<footer>
+    &copy; 2026 Next Hire India. All Rights Reserved.
+</footer>
+
 </body>
 </html>
