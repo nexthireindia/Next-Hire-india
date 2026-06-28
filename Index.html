@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Hire | Careers Portal</title>
     <style>
-        body { font-family: sans-serif; background: #f4f6f9; padding: 20px; }
-        .form-panel { max-width: 400px; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .form-panel { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h3 { color: #002855; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-submit { width: 100%; padding: 12px; background: #002855; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #002855; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 12px; background: #002855; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-submit:disabled { background: #ccc; }
     </style>
 </head>
 <body>
@@ -19,30 +21,37 @@
     <h3>Apply for Job</h3>
     <form id="applyForm">
         <div class="form-group">
-            <label>Name</label>
-            <input type="text" id="cName" required>
+            <label>Full Name</label>
+            <input type="text" id="cName" placeholder="Enter your name" required>
         </div>
         <div class="form-group">
             <label>Contact Number</label>
             <input type="tel" id="cPhone" value="+91 " maxlength="14" required 
                    oninput="this.value = '+91 ' + this.value.replace(/[^0-9]/g, '').slice(0, 10)">
         </div>
-        <button type="submit" id="submitBtn" class="btn-submit">Submit</button>
+        <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
     </form>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    const db = getDatabase(initializeApp({
+    const firebaseConfig = {
         databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app"
-    }));
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     document.getElementById('applyForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
         const name = document.getElementById('cName').value;
         const phone = document.getElementById('cPhone').value;
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Submitting...";
 
         try {
             await push(ref(db, 'nexthire_applications'), {
@@ -50,9 +59,15 @@
                 phone: phone,
                 appliedAt: new Date().toLocaleString()
             });
-            document.getElementById('formPanel').innerHTML = "<h3>Application Submitted!</h3><p>We will contact you soon.</p>";
+            
+            document.getElementById('formPanel').innerHTML = `
+                <h3 style="color: green;">Successfully Submitted! 🎉</h3>
+                <p>Thank you, <b>${name}</b>. Your application has been received. Our team will review your profile and contact you soon.</p>
+            `;
         } catch (err) {
             alert("Error: " + err.message);
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit Application";
         }
     });
 </script>
