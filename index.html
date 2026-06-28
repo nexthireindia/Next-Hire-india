@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Hire India | Careers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .brand { font-weight: 700; font-size: 24px; color: #002855; text-align: center; margin-bottom: 30px; letter-spacing: 1px; }
+        .container { max-width: 500px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .job-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        h2 { margin-top: 0; color: #002855; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #002855; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="brand">NEXT HIRE INDIA</div>
+
+    <div class="container">
+        <div class="job-card">
+            <h2>BPO Executive</h2>
+            <p>Location: Bhopal | Salary: 12k - 18k</p>
+        </div>
+
+        <h3>Apply Now</h3>
+        <form id="applyForm">
+            <input type="text" id="cName" placeholder="Full Name" required>
+            <input type="email" id="cEmail" placeholder="Email Address" required>
+            <input type="tel" id="cPhone" value="+91 " maxlength="14" required 
+                   oninput="this.value = '+91 ' + this.value.replace(/[^0-9]/g, '').slice(0, 10)">
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+
+</body>
+</html>
