@@ -1,46 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <title>Next Hire India | Careers</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
+    <header><div class="logo"><span>Next</span> <span>Hire</span> India</div></header>
+    
+    <div class="job-container" id="jobs">
+        </div>
 
-<header>
-    <div class="logo"><span>Next</span> <span>Hire</span> India</div>
-</header>
+    <script>
+        const firebaseConfig = { /* ... (Same Config) ... */ };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-<section class="hero">
-    <h1>Connecting People With Opportunities</h1>
-    <button class="btn-primary" onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})">View Openings</button>
-</section>
-
-<div class="job-container" id="jobs">
-    <!-- Dynamic Job Cards will appear here -->
-    <div class="job-card">
-        <h3>BPO Executive</h3>
-        <p>Salary: 15k-20k | Professional communication required.</p>
-        <button class="btn-primary" onclick="document.getElementById('modal').style.display='flex'">View More</button>
-    </div>
-</div>
-
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <h2>Job Title</h2>
-        <p>Full Description details will be displayed here.</p>
-        <form id="applyForm">
-            <input type="text" placeholder="Full Name" required style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd;">
-            <button type="submit" class="btn-primary" style="width:100%;">Apply Now</button>
-        </form>
-        <button onclick="document.getElementById('modal').style.display='none'" style="margin-top:10px; width:100%; padding:10px; cursor:pointer;">Close</button>
-    </div>
-</div>
-
-<footer>
-    &copy; 2026 Next Hire India. All Rights Reserved.
-</footer>
-
+        db.ref('jobs').on('value', (snapshot) => {
+            const container = document.getElementById('jobs');
+            container.innerHTML = '';
+            snapshot.forEach((child) => {
+                const job = child.val();
+                container.innerHTML += `
+                    <div class="job-card">
+                        <h3>${job.title}</h3>
+                        <p>Salary: ${job.salary}</p>
+                        <button class="btn-primary" onclick="alert('${job.desc}')">View More</button>
+                    </div>
+                `;
+            });
+        });
+    </script>
 </body>
 </html>
