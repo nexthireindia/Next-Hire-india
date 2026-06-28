@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="job-container">
+        <h2>Post New Job</h2>
+        <input type="text" id="jobTitle" placeholder="Job Title" style="width:100%; padding:10px; margin:5px 0;">
+        <input type="text" id="jobSalary" placeholder="Salary" style="width:100%; padding:10px; margin:5px 0;">
+        <textarea id="jobDesc" placeholder="Full Description" style="width:100%; padding:10px; margin:5px 0;"></textarea>
+        <button class="btn-primary" onclick="addJob()" style="width:100%;">Publish Job</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ",
+            authDomain: "next-hire-india.firebaseapp.com",
+            databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "next-hire-india",
+            storageBucket: "next-hire-india.firebasestorage.app",
+            messagingSenderId: "408453370854",
+            appId: "1:408453370854:web:4a3ca3b9b312cc9669bc27",
+            measurementId: "G-7YV7H965Q"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function addJob() {
+            const title = document.getElementById('jobTitle').value;
+            const salary = document.getElementById('jobSalary').value;
+            const desc = document.getElementById('jobDesc').value;
+
+            if(title && salary && desc) {
+                db.ref('jobs').push({ title, salary, desc });
+                alert("Job Successfully Posted!");
+            } else {
+                alert("Please fill all fields!");
+            }
+        }
+    </script>
+</body>
+</html>
