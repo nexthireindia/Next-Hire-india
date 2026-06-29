@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <header><div class="logo"><span>Next</span> <span>Hire</span> India</div></header>
-    
-    <div class="job-container" id="jobs">
-        </div>
+    <section class="hero">
+        <h1>Connecting People With Opportunities</h1>
+        <button class="btn-primary" onclick="window.location.href='admin.html'">Admin Login</button>
+    </section>
+
+    <h2 style="text-align:center; margin:30px 0;">Latest Jobs</h2>
+    <div id="jobs-container"></div>
 
     <script>
-        const firebaseConfig = { /* ... (Same Config) ... */ };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        db.ref('jobs').on('value', (snapshot) => {
-            const container = document.getElementById('jobs');
+        const config = { apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ", databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "next-hire-india" };
+        firebase.initializeApp(config);
+        
+        firebase.database().ref('jobs').on('value', (snap) => {
+            const container = document.getElementById('jobs-container');
             container.innerHTML = '';
-            snapshot.forEach((child) => {
+            snap.forEach((child) => {
                 const job = child.val();
                 container.innerHTML += `
                     <div class="job-card">
                         <h3>${job.title}</h3>
-                        <p>Salary: ${job.salary}</p>
-                        <button class="btn-primary" onclick="alert('${job.desc}')">View More</button>
-                    </div>
-                `;
+                        <p><b>Location:</b> ${job.location} | <b>Salary:</b> ${job.salary}</p>
+                        <p>${job.desc.substring(0, 50)}...</p>
+                        <button onclick="alert('${job.desc}')">View More</button>
+                        <button class="btn-primary" style="padding:5px 10px;">Apply Now</button>
+                    </div>`;
             });
         });
     </script>
