@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="style.css">
+<head><link rel="stylesheet" href="style.css"></head>
+<body style="padding:20px;">
+    <div class="branding">ADMIN DASHBOARD</div>
+    <div class="job-card">
+        <h3>Post New Job</h3>
+        <input id="t" placeholder="Title" style="width:100%; margin:5px 0;"><br>
+        <input id="s" placeholder="Salary" style="width:100%; margin:5px 0;"><br>
+        <textarea id="d" placeholder="Description" style="width:100%; margin:5px 0;"></textarea><br>
+        <button class="apply-btn" onclick="addJob()">Publish</button>
+    </div>
+    <h2>Applications</h2>
+    <div id="apps"></div>
+
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-</head>
-<body style="padding: 50px;">
-    <h2>Admin: Add Job</h2>
-    <input type="text" id="t" placeholder="Title" style="width:100%; padding:10px; margin:5px 0;"><br>
-    <input type="text" id="l" placeholder="Location" style="width:100%; padding:10px; margin:5px 0;"><br>
-    <input type="text" id="s" placeholder="Salary" style="width:100%; padding:10px; margin:5px 0;"><br>
-    <textarea id="d" placeholder="Full Description" style="width:100%; padding:10px; margin:5px 0;"></textarea><br>
-    <button class="btn-primary" onclick="addJob()">Publish Job</button>
-
     <script>
         const config = { apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ", databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "next-hire-india" };
         firebase.initializeApp(config);
         function addJob() {
-            firebase.database().ref('jobs').push({
-                title: document.getElementById('t').value,
-                location: document.getElementById('l').value,
-                salary: document.getElementById('s').value,
-                desc: document.getElementById('d').value
-            });
-            alert("Job Posted!");
+            firebase.database().ref('jobs').push({ title: document.getElementById('t').value, salary: document.getElementById('s').value, desc: document.getElementById('d').value });
+            alert("Posted!");
         }
+        firebase.database().ref('applications').on('value', (snap) => {
+            const container = document.getElementById('apps');
+            container.innerHTML = '';
+            snap.forEach((child) => {
+                const app = child.val();
+                container.innerHTML += `<div class="job-card"><p>Name: ${app.name} | Job: ${app.jobTitle}</p></div>`;
+            });
+        });
     </script>
 </body>
 </html>
