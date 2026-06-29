@@ -1,6 +1,7 @@
-body { font-family: 'Montserrat', sans-serif; margin: 0; background: #f4f7f9; }
-.hero { height: 400px; background: linear-gradient(rgba(0,40,85,0.7), rgba(0,40,85,0.7)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1500&q=80'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
-.btn-primary { background: #ff7e00; color: white; padding: 12px 30px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-.job-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin: 20px auto; width: 80%; max-width: 700px; border-left: 5px solid #ff7e00; }
+body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f8f9fa; }
+.branding { background: #002855; color: white; padding: 20px 40px; font-size: 24px; font-weight: bold; border-bottom: 4px solid #ff7e00; text-transform: uppercase; }
+.hero { height: 400px; background: linear-gradient(rgba(0, 40, 85, 0.75), rgba(0, 40, 85, 0.75)), url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1500&q=80'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+.apply-btn { background: #ff7e00; color: white; border: none; padding: 15px 40px; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 5px; }
+.job-card { background: white; border-left: 6px solid #ff7e00; width: 90%; max-width: 700px; margin: 20px auto; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; }
-.modal-content { background:white; width:80%; max-width:500px; margin:100px auto; padding:20px; border-radius:8px; }
+.modal-content { background:white; width:90%; max-width:400px; margin:100px auto; padding:20px; }
