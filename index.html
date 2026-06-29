@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-</head>
+<head><link rel="stylesheet" href="style.css"></head>
 <body>
-    <section class="hero">
-        <h1>Connecting People With Opportunities</h1>
-        <button class="btn-primary" onclick="window.location.href='admin.html'">Admin Login</button>
-    </section>
+<div class="branding">NEXT HIRE INDIA</div>
+<section class="hero">
+    <h1>Connecting people with opportunities</h1>
+    <button class="apply-btn" onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+</section>
 
-    <h2 style="text-align:center; margin:30px 0;">Latest Jobs</h2>
-    <div id="jobs-container"></div>
+<div id="jobs"><h2 style="text-align:center; margin:40px 0;">Latest Jobs</h2></div>
 
-    <script>
-        const config = { apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ", databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "next-hire-india" };
-        firebase.initializeApp(config);
-        
-        firebase.database().ref('jobs').on('value', (snap) => {
-            const container = document.getElementById('jobs-container');
-            container.innerHTML = '';
-            snap.forEach((child) => {
-                const job = child.val();
-                container.innerHTML += `
-                    <div class="job-card">
-                        <h3>${job.title}</h3>
-                        <p><b>Location:</b> ${job.location} | <b>Salary:</b> ${job.salary}</p>
-                        <p>${job.desc.substring(0, 50)}...</p>
-                        <button onclick="alert('${job.desc}')">View More</button>
-                        <button class="btn-primary" style="padding:5px 10px;">Apply Now</button>
-                    </div>`;
-            });
+<!-- Application Modal -->
+<div id="applyModal" class="modal"><div class="modal-content">
+    <h3>Apply for Job</h3>
+    <input type="text" id="userName" placeholder="Name" style="width:100%; margin:5px 0;">
+    <input type="text" id="userPhone" placeholder="Phone" style="width:100%; margin:5px 0;">
+    <button class="apply-btn" onclick="submitApp()">Submit</button>
+</div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script>
+    const config = { apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ", databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "next-hire-india" };
+    firebase.initializeApp(config);
+    let selectedJob = "";
+    firebase.database().ref('jobs').on('value', (snap) => {
+        const container = document.getElementById('jobs');
+        container.innerHTML = '<h2 style="text-align:center; margin:40px 0;">Latest Jobs</h2>';
+        snap.forEach((child) => {
+            const job = child.val();
+            container.innerHTML += `<div class="job-card"><h3>${job.title}</h3><p>Salary: ${job.salary}</p><button class="apply-btn" style="padding:8px 15px;" onclick="openModal('${job.title}')">Apply Now</button></div>`;
         });
-    </script>
+    });
+    function openModal(title) { selectedJob = title; document.getElementById('applyModal').style.display='block'; }
+    function submitApp() {
+        firebase.database().ref('applications').push({ name: document.getElementById('userName').value, phone: document.getElementById('userPhone').value, jobTitle: selectedJob });
+        alert("Applied!"); document.getElementById('applyModal').style.display='none';
+    }
+</script>
 </body>
 </html>
