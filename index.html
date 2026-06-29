@@ -1,42 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="style.css"></head>
-<body>
-<div class="branding">NEXT HIRE INDIA</div>
+<div class="branding"><span class="next">Next</span> <span class="hire">Hire</span> India</div>
 <section class="hero">
-    <h1>Connecting people with opportunities</h1>
-    <button class="apply-btn" onclick="document.getElementById('jobs').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+    <h1>Connecting People With Opportunities</h1>
+    <button class="main-apply-btn" onclick="document.getElementById('jobs').scrollIntoView()">Apply Now</button>
 </section>
 
-<div id="jobs"><h2 style="text-align:center; margin:40px 0;">Latest Jobs</h2></div>
+<div id="jobs"><h2 style="text-align:center; font-weight:800;">Latest Jobs</h2></div>
 
-<!-- Application Modal -->
+<!-- Modal -->
 <div id="applyModal" class="modal"><div class="modal-content">
-    <h3>Apply for Job</h3>
-    <input type="text" id="userName" placeholder="Name" style="width:100%; margin:5px 0;">
-    <input type="text" id="userPhone" placeholder="Phone" style="width:100%; margin:5px 0;">
-    <button class="apply-btn" onclick="submitApp()">Submit</button>
+    <div id="formView">
+        <h3>Apply for: <span id="jobTitleDisplay"></span></h3>
+        <input type="text" id="n" placeholder="Full Name" required style="width:100%; padding:10px; margin:5px 0;">
+        <input type="email" id="e" placeholder="Email" required style="width:100%; padding:10px; margin:5px 0;">
+        <input type="text" id="p" value="+91" maxlength="13" required style="width:100%; padding:10px; margin:5px 0;">
+        <button class="main-apply-btn" style="width:100%;" onclick="submitApp()">Submit Application</button>
+    </div>
+    <div id="successView" style="display:none; text-align:center;">
+        <h2 style="color:green;">Application Submitted!</h2>
+        <p>Thank you. We will contact you soon.</p>
+        <button class="main-apply-btn" onclick="location.reload()">Back</button>
+    </div>
 </div></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script>
-    const config = { apiKey: "AIzaSyBSVWBUsCm-gUjGrpqDcVDJOPezWM9y9gQ", databaseURL: "https://next-hire-india-default-rtdb.asia-southeast1.firebasedatabase.app", projectId: "next-hire-india" };
-    firebase.initializeApp(config);
-    let selectedJob = "";
-    firebase.database().ref('jobs').on('value', (snap) => {
-        const container = document.getElementById('jobs');
-        container.innerHTML = '<h2 style="text-align:center; margin:40px 0;">Latest Jobs</h2>';
-        snap.forEach((child) => {
-            const job = child.val();
-            container.innerHTML += `<div class="job-card"><h3>${job.title}</h3><p>Salary: ${job.salary}</p><button class="apply-btn" style="padding:8px 15px;" onclick="openModal('${job.title}')">Apply Now</button></div>`;
-        });
-    });
-    function openModal(title) { selectedJob = title; document.getElementById('applyModal').style.display='block'; }
     function submitApp() {
-        firebase.database().ref('applications').push({ name: document.getElementById('userName').value, phone: document.getElementById('userPhone').value, jobTitle: selectedJob });
-        alert("Applied!"); document.getElementById('applyModal').style.display='none';
+        const data = { name: document.getElementById('n').value, email: document.getElementById('e').value, phone: document.getElementById('p').value, jobTitle: window.selectedJob };
+        firebase.database().ref('applications').push(data);
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('successView').style.display = 'block';
     }
 </script>
-</body>
-</html>
