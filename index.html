@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Clone - Step 1 UI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: #eaeded;
+      color: #0f1111;
+    }
+
+    /* Main Navbar */
+    .navbar {
+      background-color: #131921;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 15px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-logo span {
+      color: #ff9900;
+    }
+
+    .nav-location {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .nav-location span:first-child {
+      color: #ccc;
+    }
+
+    .nav-location span:last-child {
+      font-weight: bold;
+    }
+
+    .nav-search {
+      flex: 1;
+      display: flex;
+      height: 40px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .nav-search select {
+      background-color: #f3f3f3;
+      border: none;
+      padding: 0 10px;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-search input {
+      flex: 1;
+      border: none;
+      padding: 0 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .nav-search button {
+      background-color: #febd69;
+      border: none;
+      width: 45px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .nav-search button:hover {
+      background-color: #f3a847;
+    }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .nav-item span:first-child {
+      color: #ccc;
+    }
+
+    .nav-item span:last-child {
+      font-weight: bold;
+    }
+
+    .nav-cart {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .cart-count {
+      background-color: #ff9900;
+      color: #111;
+      font-size: 12px;
+      border-radius: 50%;
+      padding: 2px 6px;
+      margin-left: 4px;
+    }
+
+    /* Sub-nav Strip */
+    .subnav {
+      background-color: #232f3e;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 18px;
+      color: white;
+      font-size: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .subnav-link {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .subnav-link:hover {
+      color: #febd69;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(to bottom, #232f3e, #eaeded);
+      padding: 30px 20px 80px 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .hero-banner h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .hero-banner p {
+      font-size: 15px;
+      color: #ddd;
+    }
+
+    /* Product Section */
+    .container {
+      max-width: 1300px;
+      margin: -60px auto 40px auto;
+      padding: 0 16px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .product-card {
+      background: white;
+      padding: 16px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+
+    .product-title {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+
+    .product-rating {
+      color: #ffa41c;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #b12704;
+      margin-bottom: 12px;
+    }
+
+    .product-price small {
+      font-size: 12px;
+      color: #565959;
+      font-weight: normal;
+      text-decoration: line-through;
+      margin-left: 6px;
+    }
+
+    .btn-cart {
+      background-color: #ffd814;
+      border: 1px solid #fcd200;
+      border-radius: 20px;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .btn-cart:hover {
+      background-color: #f7ca00;
+    }
+
+    /* Cart Sidebar */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 340px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      transition: right 0.3s ease;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.open {
+      right: 0;
+    }
+
+    .cart-header {
+      background-color: #232f3e;
+      color: white;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+      font-size: 13px;
+    }
+
+    .cart-footer {
+      padding: 16px;
+      border-top: 1px solid #ddd;
+      background-color: #fcfcfc;
+    }
+
+    .cart-footer button {
+      width: 100%;
+      background-color: #ffd814;
+      border: 1px solid #fcd200;
+      border-radius: 8px;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 150;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+
+    /* Sign-in Modal */
+    .auth-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 250;
+    }
+
+    .auth-box.open {
+      display: block;
+    }
+
+    .auth-box h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .auth-box input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #888;
+      border-radius: 4px;
+    }
+
+    .auth-box button {
+      width: 100%;
+      background-color: #ffd814;
+      border: 1px solid #fcd200;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Amazon Navbar -->
+  <header class="navbar">
+    <div class="nav-logo">Amazon<span>.in</span></div>
+
+    <div class="nav-location">
+      <span>Deliver to</span>
+      <span>Select Address</span>
+    </div>
+
+    <div class="nav-search">
+      <select>
+        <option>All</option>
+        <option>Electronics</option>
+        <option>Fashion</option>
+      </select>
+      <input type="text" id="search-bar" placeholder="Search Amazon.in" oninput="liveSearch()">
+      <button>🔍</button>
+    </div>
+
+    <div class="nav-tools">
+      <div class="nav-item" onclick="toggleAuth()">
+        <span id="user-greeting">Hello, sign in</span>
+        <span>Account & Lists</span>
+      </div>
+
+      <div class="nav-item">
+        <span>Returns</span>
+        <span>& Orders</span>
+      </div>
+
+      <div class="nav-cart" onclick="toggleCart()">
+        🛒 Cart <span class="cart-count" id="cart-counter">0</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub Navigation Strip -->
+  <div class="subnav">
+    <div class="subnav-link"><b>☰ All</b></div>
+    <div class="subnav-link">Fresh</div>
+    <div class="subnav-link">Amazon Pay</div>
+    <div class="subnav-link">Gift Cards</div>
+    <div class="subnav-link">Today's Deals</div>
+    <div class="subnav-link">Sell</div>
+    <div class="subnav-link">Customer Service</div>
+  </div>
+
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <h1>Great Deals & Latest Gadgets</h1>
+    <p>Top electronics, fashion, and accessories at lowest prices</p>
+  </div>
+
+  <!-- Main Product Area -->
+  <main class="container">
+    <div class="product-grid" id="product-container"></div>
+  </main>
+
+  <!-- Sliding Cart Drawer -->
+  <div class="overlay" id="overlay" onclick="closeDrawers()"></div>
+
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Shopping Cart</h3>
+      <button class="close-btn" onclick="toggleCart()">&times;</button>
+    </div>
+    <div class="cart-body" id="cart-body"></div>
+    <div class="cart-footer">
+      <div><b>Subtotal: ₹<span id="cart-total">0</span></b></div>
+      <button onclick="alert('Step 1 complete! Backend logic next.')">Proceed to Buy</button>
+    </div>
+  </aside>
+
+  <!-- Sign In Popup Box -->
+  <div class="auth-box" id="auth-box">
+    <h3>Sign in</h3>
+    <label style="font-size: 13px; font-weight: bold;">Email or mobile phone number</label>
+    <input type="text" id="auth-input" placeholder="Enter email">
+    <button onclick="saveUser()">Continue</button>
+  </div>
+
+  <script>
+    const sampleProducts = [
+      { id: 1, name: "Noise Pulse 2 Max 1.85'' Smart Watch", price: 1499, originalPrice: 5999, rating: "★★★★☆ (12,450)", image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=350" },
+      { id: 2, name: "boAt Rockerz 450 Bluetooth Headphones", price: 1299, originalPrice: 3990, rating: "★★★★★ (45,210)", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=350" },
+      { id: 3, name: "WildHorn Brown Leather Wallet for Men", price: 449, originalPrice: 1499, rating: "★★★★☆ (3,120)", image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=350" },
+      { id: 4, name: "Puma Mens Nitro Running Shoes", price: 2199, originalPrice: 4999, rating: "★★★★☆ (8,900)", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=350" }
+    ];
+
+    let cart = [];
+
+    // Render Products Grid
+    function renderProductGrid(items = sampleProducts) {
+      const container = document.getElementById("product-container");
+      container.innerHTML = items.map(p => `
+        <div class="product-card">
+          <div>
+            <img src="${p.image}" alt="${p.name}">
+            <div class="product-title">${p.name}</div>
+            <div class="product-rating">${p.rating}</div>
+            <div class="product-price">₹${p.price} <small>M.R.P: ₹${p.originalPrice}</small></div>
+          </div>
+          <button class="btn-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>
+      `).join("");
+    }
+
+    // Toggle Drawers & Modals
+    function toggleCart() {
+      document.getElementById("cart-drawer").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("open");
+    }
+
+    function toggleAuth() {
+      document.getElementById("auth-box").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("open");
+    }
+
+    function closeDrawers() {
+      document.getElementById("cart-drawer").classList.remove("open");
+      document.getElementById("auth-box").classList.remove("open");
+      document.getElementById("overlay").classList.remove("open");
+    }
+
+    // Cart Logic
+    function addToCart(id) {
+      const item = sampleProducts.find(p => p.id === id);
+      cart.push(item);
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      document.getElementById("cart-counter").innerText = cart.length;
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById("cart-total").innerText = total;
+
+      const body = document.getElementById("cart-body");
+      if (cart.length === 0) {
+        body.innerHTML = "<p style='color:#666;'>Your Amazon Cart is empty.</p>";
+        return;
+      }
+
+      body.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <div>
+            <div><b>${item.name}</b></div>
+            <div style="color: #b12704;">₹${item.price}</div>
+          </div>
+          <button style="border:none; background:none; color:#007185; cursor:pointer;" onclick="removeItem(${index})">Delete</button>
+        </div>
+      `).join("");
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      updateCartDisplay();
+    }
+
+    // Live Search
+    function liveSearch() {
+      const query = document.getElementById("search-bar").value.toLowerCase();
+      const filtered = sampleProducts.filter(p => p.name.toLowerCase().includes(query));
+      renderProductGrid(filtered);
+    }
+
+    // Sign in Mock
+    function saveUser() {
+      const input = document.getElementById("auth-input").value;
+      if (input) {
+        document.getElementById("user-greeting").innerText = `Hello, ${input.split("@")[0]}`;
+        closeDrawers();
+      }
+    }
+
+    renderProductGrid();
+  </script>
+</body>
+    </html>
+  
