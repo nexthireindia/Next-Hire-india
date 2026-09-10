@@ -1,1 +1,1 @@
-Amazon signin clone 
+Shop online 
